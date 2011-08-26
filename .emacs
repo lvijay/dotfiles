@@ -195,7 +195,8 @@
 ;;; Other emacs customizations ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-to-list 'load-path "~/code/twitching")
-(require 'twitching)
-(load (expand-file-name "~/.emacs.d/twitching/config.el.gpg") t nil)
+(defun start-twitching ()
+  (require 'twitching)
+  (load (expand-file-name "~/.emacs.d/twitching/config.el.gpg") t nil))
 
 ;;; eof
