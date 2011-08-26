@@ -23,7 +23,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; package installers ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;;; package -- package installer
 ;; built-in with emacs-24
 (when (< emacs-major-version 24)
