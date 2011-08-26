@@ -19,8 +19,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;;; auto-install setup
-(require 'auto-install)
-(setq auto-install-directory (expand-file-name "~/.emacs.d/auto-install/"))
+;(require 'auto-install)
+;(setq auto-install-directory (expand-file-name "~/.emacs.d/auto-install/"))
 
 ;;; package -- package installer
 
