@@ -212,9 +212,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Other emacs customizations ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(add-to-list 'load-path "C:/code/git/twitching")
-(require 'twitching)
-(load (expand-file-name "~/.emacs.d/twitching/config.el.gpg") t nil)
+(add-to-list 'load-path "~/code/twitching")
+(defun start-twitching ()
+  (require 'twitching)
+  (load (expand-file-name "~/.emacs.d/twitching/config.el.gpg") t nil))
 
 
 ;;;;;;;;;;;;;;;;;;;;;
