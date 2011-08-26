@@ -1,0 +1,10 @@
+XTerm*background		: black
+XTerm*foreground		: gray
+XTerm*title			: terminal
+XTerm*saveLines			: 1024
+XTerm*font			: 10x20
+XTerm*metaSendsEscape		: true
+XTerm*highlightSelection	: true
+XTerm*trimSelection		: true
+
+
