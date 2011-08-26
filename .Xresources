@@ -7,4 +7,8 @@ XTerm*metaSendsEscape		: true
 XTerm*highlightSelection	: true
 XTerm*trimSelection		: true
 
-
+Emacs*menuBar			 : off
+Emacs*verticalScrollBars : off
+Emacs*BorderWidth		 : 2
+Emacs*font				 : 7x14
+!Emacs*fullscreen		 : fullboth
