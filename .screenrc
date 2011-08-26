@@ -1,0 +1,14 @@
+shell bash
+defscrollback 2048
+startup_message off
+nethack on
+
+hardstatus on
+#hardstatus alwayslastline
+
+caption always "%>%{wk}%?%-Lw%?%{bw}%n*%f %t%?(%u)%?%{wk}%?%+Lw%?%<"
+
+
+
+
+#caption always "%{= kw}%?%-Lw%?%{+b kw}%n*%t%f %?(%u)%?%{= kw}%?%+Lw%?"
