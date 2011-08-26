@@ -23,9 +23,12 @@
 (setq auto-install-directory (expand-file-name "~/.emacs.d/auto-install/"))
 
 ;;; package -- package installer
-;(add-to-list 'load-path "c:/emacs-23.1/lisp/package")
-;(load "package")
-;(package-initialize)
+
+;; built-in with emacs-24
+(when (< emacs-major-version 24)
+  (add-to-list 'load-path "~/.emacs.d/package")
+  (load "package")
+  (package-initialize))
 
 ;;; marmalade -- package archive for emacs lisp
 ;; fully compatible with package.el and ELPA
