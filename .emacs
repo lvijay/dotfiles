@@ -188,7 +188,7 @@
   (set (make-local-variable 'comment-start-skip) "#.*$"))
 
 (setq auto-mode-alist
-      (acons "COMMIT_EDITMSG" 'git-commit-file-mode auto-mode-alist))
+      (cons (cons "COMMIT_EDITMSG" 'git-commit-file-mode) auto-mode-alist))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
