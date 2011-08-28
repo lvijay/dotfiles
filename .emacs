@@ -170,6 +170,7 @@
 (add-hook 'js2-mode-hook (lambda ()
                            (setq forward-sexp-function nil)
                            (local-set-key (kbd "C-M-f") 'forward-sexp)))
+(add-hook 'js-mode-hook #'c-like-prog-mode-prefs)
 (add-hook 'lisp-interaction-mode-hook (lambda ()
                                         (lisp-preferences)
                                         (setq next-line-add-newlines t)))
