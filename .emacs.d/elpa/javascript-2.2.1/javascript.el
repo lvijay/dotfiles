@@ -426,7 +426,7 @@ returns nil."
              (if (looking-at "[({[][ \t]*\\(/[/*]\\|$\\)")
                  (progn
                    (skip-syntax-backward " ")
-                   (when (= (char-before) ?\)) (backward-list))
+                   (when (and (char-before) (= (char-before) ?\))) (backward-list))
                    (back-to-indentation)
                    (cond (same-indent-p
                           (current-column))
