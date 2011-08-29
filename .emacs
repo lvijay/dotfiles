@@ -28,7 +28,11 @@
 (when (< emacs-major-version 24)
   (add-to-list 'load-path "~/.emacs.d/package")
   (load "package")
-  (package-initialize))
+  (package-initialize)
+  ;; `c-subword-mode' was renamed to `subword-mode' in Emacs 24
+  (defun subword-mode (&optional arg)
+    (interactive "P")
+    (c-subword-mode arg)))
 
 ;;; marmalade -- package archive for emacs lisp
 ;; fully compatible with package.el and ELPA
