@@ -6,6 +6,7 @@ XTerm*font			: 10x20
 XTerm*metaSendsEscape		: true
 XTerm*highlightSelection	: true
 XTerm*trimSelection		: true
+XTerm*VT100.translations: #override <Key>F7: insert-selection(CLIPBOARD)
 
 Emacs*menuBar			 : off
 Emacs*verticalScrollBars : off
