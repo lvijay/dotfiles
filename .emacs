@@ -28,12 +28,18 @@
 ;; built-in with emacs-24
 (when (< emacs-major-version 24)
   (add-to-list 'load-path "~/.emacs.d/package")
-  (load "package")
-  (package-initialize)
   ;; `c-subword-mode' was renamed to `subword-mode' in Emacs 24
   (defun subword-mode (&optional arg)
     (interactive "P")
     (c-subword-mode arg)))
+
+(load "package")
+(package-initialize)
+
+;;; explicitly add tromey's library for the latest emacs
+(when (>= emacs-major-version 24)
+  (add-to-list 'package-archives
+               '("elpa" . "http://tromey.com/elpa/")))
 
 ;;; marmalade -- package archive for emacs lisp
 ;; fully compatible with package.el and ELPA
