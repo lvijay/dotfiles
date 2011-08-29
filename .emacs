@@ -3,6 +3,7 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
+ '(javascript-indent-level 2)
  '(safe-local-variable-values
    '((paredit-mode . t) (variable . linum) (linum . t) (major-mode . org))))
 
@@ -178,6 +179,11 @@
                            (setq forward-sexp-function nil)
                            (local-set-key (kbd "C-M-f") 'forward-sexp)))
 (add-hook 'js-mode-hook #'c-like-prog-mode-prefs)
+
+;;; Use JavaScript mode for all .js files.  Less intrusive than js2-mode
+(add-hook 'javascript-mode #'c-like-prog-mode-prefs)
+(setq auto-mode-alist (cons (cons "\\.js$" 'javascript-mode) auto-mode-alist))
+
 (add-hook 'lisp-interaction-mode-hook (lambda ()
                                         (lisp-preferences)
                                         (setq next-line-add-newlines t)))
