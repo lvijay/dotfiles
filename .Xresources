@@ -1,15 +1,15 @@
-XTerm*background		: black
-XTerm*foreground		: gray
-XTerm*title			: terminal
-XTerm*saveLines			: 1024
-XTerm*font			: 10x20
-XTerm*metaSendsEscape		: true
-XTerm*highlightSelection	: true
-XTerm*trimSelection		: true
-XTerm*VT100.translations: #override <Key>F7: insert-selection(CLIPBOARD)
+XTerm*background         : black
+XTerm*foreground         : gray
+XTerm*title              : terminal
+XTerm*saveLines          : 1024
+XTerm*font               : 10x20
+XTerm*metaSendsEscape    : true
+XTerm*highlightSelection : true
+XTerm*trimSelection      : true
+XTerm*VT100.translations : #override <Key>F7: insert-selection(CLIPBOARD)
 
-Emacs*menuBar			 : off
+Emacs*menuBar            : off
 Emacs*verticalScrollBars : off
-Emacs*BorderWidth		 : 2
-Emacs*font				 : 7x14
-!Emacs*fullscreen		 : fullboth
+Emacs*BorderWidth        : 2
+Emacs*font               : 7x14
+!Emacs*fullscreen        : fullboth
