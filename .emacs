@@ -16,16 +16,15 @@
  )
 
 
+;;; Add .emacs.d to the load-path by default
+(add-to-list 'load-path "~/.emacs.d")
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; package installers ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; auto-install setup
-;(require 'auto-install)
-;(setq auto-install-directory (expand-file-name "~/.emacs.d/auto-install/"))
-
 ;;; package -- package installer
-
 ;; built-in with emacs-24
 (when (< emacs-major-version 24)
   (add-to-list 'load-path "~/.emacs.d/package")
@@ -217,5 +216,13 @@
 (defun start-twitching ()
   (require 'twitching)
   (load (expand-file-name "~/.emacs.d/twitching/config.el.gpg") t nil))
+
+
+;;;;;;;;;;;;;;;;;;;;;
+;;; Markdown mode ;;;
+;;;;;;;;;;;;;;;;;;;;;
+(autoload 'markdown-mode "markdown-mode"
+  "MarkDown mode, popular in GitHub"
+  t)
 
 ;;; eof
