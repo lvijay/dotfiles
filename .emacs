@@ -23,6 +23,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; package installers ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
+<<<<<<< HEAD
+=======
+
+>>>>>>> Added support for markdown-mode and mark-down.el file
 ;;; package -- package installer
 ;; built-in with emacs-24
 (when (< emacs-major-version 24)
@@ -185,12 +189,8 @@
                            (local-set-key (kbd "C-M-f") 'forward-sexp)))
 (add-hook 'js-mode-hook #'c-like-prog-mode-prefs)
 
-<<<<<<< HEAD
 ;;; Use javascript-mode for all .js files.  Less intrusive than
 ;;; js2-mode
-=======
-;;; Use JavaScript mode for all .js files.  Less intrusive than js2-mode
->>>>>>> Use javascript-mode for js files, set indentation level to 2
 (add-hook 'javascript-mode #'c-like-prog-mode-prefs)
 (setq auto-mode-alist (cons (cons "\\.js$" 'javascript-mode) auto-mode-alist))
 
