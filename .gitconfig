@@ -1,0 +1,8 @@
+[user]
+	name = Vijay Lakshminarayanan
+[color]
+	ui = true
+[merge]
+	tool = emerge
+[mergetool "emerge"]
+	path = /home/vijay/bin/emerge-for-git
