@@ -3,6 +3,8 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
+ '(javascript-indent-level 2)
+ '(js-indent-level 2)
  '(safe-local-variable-values
    '((paredit-mode . t) (variable . linum) (linum . t) (major-mode . org))))
 
@@ -14,21 +16,30 @@
  )
 
 
+;;; Add .emacs.d to the load-path by default
+(add-to-list 'load-path "~/.emacs.d")
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; package installers ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;; auto-install setup
-(require 'auto-install)
-(setq auto-install-directory (expand-file-name "~/.emacs.d/auto-install/"))
-
 ;;; package -- package installer
-
 ;; built-in with emacs-24
 (when (< emacs-major-version 24)
   (add-to-list 'load-path "~/.emacs.d/package")
-  (load "package")
-  (package-initialize))
+  ;; `c-subword-mode' was renamed to `subword-mode' in Emacs 24
+  (defun subword-mode (&optional arg)
+    (interactive "P")
+    (c-subword-mode arg)))
+
+(load "package")
+(package-initialize)
+
+;;; explicitly add tromey's library for the latest emacs
+(when (>= emacs-major-version 24)
+  (add-to-list 'package-archives
+               '("elpa" . "http://tromey.com/elpa/")))
 
 ;;; marmalade -- package archive for emacs lisp
 ;; fully compatible with package.el and ELPA
@@ -174,6 +185,12 @@
                            (setq forward-sexp-function nil)
                            (local-set-key (kbd "C-M-f") 'forward-sexp)))
 (add-hook 'js-mode-hook #'c-like-prog-mode-prefs)
+
+;;; Use javascript-mode for all .js files.  Less intrusive than
+;;; js2-mode
+(add-hook 'javascript-mode #'c-like-prog-mode-prefs)
+(setq auto-mode-alist (cons (cons "\\.js$" 'javascript-mode) auto-mode-alist))
+
 (add-hook 'lisp-interaction-mode-hook (lambda ()
                                         (lisp-preferences)
                                         (setq next-line-add-newlines t)))
@@ -189,7 +206,7 @@
   (set (make-local-variable 'comment-start-skip) "#.*$"))
 
 (setq auto-mode-alist
-      (acons "COMMIT_EDITMSG" 'git-commit-file-mode auto-mode-alist))
+      (cons (cons "COMMIT_EDITMSG" 'git-commit-file-mode) auto-mode-alist))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -198,5 +215,13 @@
 (add-to-list 'load-path "C:/code/git/twitching")
 (require 'twitching)
 (load (expand-file-name "~/.emacs.d/twitching/config.el.gpg") t nil)
+
+
+;;;;;;;;;;;;;;;;;;;;;
+;;; Markdown mode ;;;
+;;;;;;;;;;;;;;;;;;;;;
+(autoload 'markdown-mode "markdown-mode"
+  "MarkDown mode, popular in GitHub"
+  t)
 
 ;;; eof
