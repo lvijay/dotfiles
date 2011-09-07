@@ -1,14 +1,11 @@
 shell bash
-defscrollback 2048
 startup_message off
 nethack on
+vbell on
+
+defutf8 on
+defscrollback 2048
 
 hardstatus on
-#hardstatus alwayslastline
-
-caption always "%>%{wk}%?%-Lw%?%{bw}%n*%f %t%?(%u)%?%{wk}%?%+Lw%?%<"
-
-
-
-
-#caption always "%{= kw}%?%-Lw%?%{+b kw}%n*%t%f %?(%u)%?%{= kw}%?%+Lw%?"
+hardstatus alwayslastline
+hardstatus string "%>%{wk}%?%-Lw%?%{bw}%n*%f %t%?(%u)%?%{wk}%?%+Lw%?%<"
