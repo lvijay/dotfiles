@@ -8,8 +8,9 @@ XTerm*highlightSelection : true
 XTerm*trimSelection      : true
 XTerm*VT100.translations : #override <Key>F7: insert-selection(CLIPBOARD)
 
-Emacs*menuBar            : off
+Emacs*menuBar            : on
+Emacs*toolBar            : off
 Emacs*verticalScrollBars : off
 Emacs*BorderWidth        : 2
 Emacs*font               : 6x13
-!Emacs*fullscreen        : fullboth
+Emacs*fullscreen         : fullboth
