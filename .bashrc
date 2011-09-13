@@ -113,3 +113,14 @@ alias emax='emacsclient -n'
 # function settitle() { echo -ne "\e]2;$@\a\e]1;$@\a"; }
 
 fortune -a
+
+## For maintaining machine specific configurations that just aren't
+## worth storing in this file.
+##
+## For example: in one of my NT machines, emacsclient doesn't work.  I
+## explicitly export EMACS_SERVER_FILE to the correct file for it to
+## work.  This variable is not worth maintaining in this file because
+## my other environments Just Work.
+if [[ -f .envspecific ]] && [[ -x .envspecific ]]; then
+    . .envspecific
+fi
