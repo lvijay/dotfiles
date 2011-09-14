@@ -29,7 +29,7 @@
 # Use case-insensitive filename globbing
 # shopt -s nocaseglob
 
-# Make bash append rather than overwrite the history on disk
+# Append to .bash_history immediately
 shopt -s histappend
 
 # When changing directory small typos can be ignored by bash
@@ -62,7 +62,7 @@ esac
 # ###############
 
 # Don't put duplicate lines in the history.
-export HISTCONTROL="ignoredups"
+export HISTCONTROL=ignoredups
 
 # Ignore some controlling instructions
 export HISTIGNORE="[   ]*:&:bg:fg:exit:ls"
@@ -71,7 +71,7 @@ export HISTIGNORE="[   ]*:&:bg:fg:exit:ls"
 export PROMPT_COMMAND="history -a"
 
 # Remember everything
-export HISTSIZE=100000
+export HISTSIZE=1000000
 
 # Aliases
 # #######
@@ -104,13 +104,19 @@ alias grep='grep --color'                     # show differences in colour
 # alias l='ls -CF'                              #
 alias ls='ls -A --color=tty'                 # classify files in colour
 
-alias emax='emacsclient -n'
 
 # Functions
 # #########
 
 # Some example functions
 # function settitle() { echo -ne "\e]2;$@\a\e]1;$@\a"; }
+
+# Screen
+# ######
+# start screen when the terminal is opened
+if [[ "${TERM}" = cygwin ]]; then
+  exec screen
+fi
 
 fortune -a
 
