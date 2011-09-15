@@ -32,7 +32,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; package installers ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 ;; This was installed by package-install.el.
 ;; This provides support for the package system and
 ;; interfacing with ELPA, the package archive.
@@ -53,7 +52,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; emacs basic preferences ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (setq-default indent-tabs-mode nil      ; never use tabs
               tab-width 4               ; indent tabs with 4 spaces
               enable-recursive-minibuffers t) ; use minibuffer when
