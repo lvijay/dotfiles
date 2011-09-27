@@ -239,5 +239,13 @@
 (autoload 'markdown-mode "markdown-mode"
   "MarkDown mode, popular in GitHub"
   t)
+(eval-when (load "markdown-mode")
+  (add-hook 'markdown-mode-hook
+            (lambda ()
+              (auto-fill-mode +1)
+              (local-set-key (kbd "C-M-f") 'forward-sexp)
+              (local-set-key (kbd "C-M-b") 'backward-sexp)
+              (local-set-key (kbd "C-M-u") 'backward-up-list)
+              (local-set-key (kbd "C-M-d") 'down-list))))
 
 ;;; eof
