@@ -115,10 +115,10 @@
 (setq-default uniquify-buffer-name-style 'post-forward)
 
 ;; The latest paredit has swapped ) and M-).  Restore them.
-(progn
-  (require 'paredit)
-  (define-key paredit-mode-map (kbd ")") 'paredit-close-round-and-newline)
-  (define-key paredit-mode-map (kbd "M-)") 'paredit-close-round))
+;(progn
+;  (require 'paredit)
+;  (define-key paredit-mode-map (kbd ")") 'paredit-close-round-and-newline)
+;  (define-key paredit-mode-map (kbd "M-)") 'paredit-close-round))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
