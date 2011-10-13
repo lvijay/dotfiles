@@ -239,7 +239,7 @@
 (autoload 'markdown-mode "markdown-mode"
   "MarkDown mode, popular in GitHub"
   t)
-(eval-when (load "markdown-mode")
+(eval-after-load "markdown-mode"
   (add-hook 'markdown-mode-hook
             (lambda ()
               (auto-fill-mode +1)
