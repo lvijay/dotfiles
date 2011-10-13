@@ -1,12 +1,21 @@
+;; September 2nd 2009
+
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
+ '(erc-away-nickname "lvijay")
+ '(erc-email-userid "laksvij@jeemail.com")
+ '(erc-modules (quote (autojoin button completion fill irccontrols list match menu move-to-prompt netsplit networks noncommands readonly ring smiley stamp track)))
+ '(erc-nick "lvijay")
+ '(erc-prompt-for-password nil)
+ '(erc-user-full-name "Vijay Lakshminarayanan")
  '(javascript-indent-level 2)
  '(js-indent-level 2)
  '(safe-local-variable-values
-   '((paredit-mode . t) (variable . linum) (linum . t) (major-mode . org))))
+   '((paredit-mode . t) (major-mode . emacs-lisp) (variable . linum) (linum . t) (major-mode . org)))
+ '(user-mail-address "laksvij@gmail.com"))
 
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
@@ -23,34 +32,26 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; package installers ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;;; package -- package installer
-;; built-in with emacs-24
-(when (< emacs-major-version 24)
-  (add-to-list 'load-path "~/.emacs.d/package")
-  ;; `c-subword-mode' was renamed to `subword-mode' in Emacs 24
-  (defun subword-mode (&optional arg)
-    (interactive "P")
-    (c-subword-mode arg)))
-
-(load "package")
-(package-initialize)
-
-;;; explicitly add tromey's library for the latest emacs
-(when (>= emacs-major-version 24)
-  (add-to-list 'package-archives
-               '("elpa" . "http://tromey.com/elpa/")))
-
-;;; marmalade -- package archive for emacs lisp
-;; fully compatible with package.el and ELPA
-(add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
+;; This was installed by package-install.el.
+;; This provides support for the package system and
+;; interfacing with ELPA, the package archive.
+;; Move this code earlier if you want to reference
+;; packages in your .emacs.
+(if (= emacs-major-version 24)
+    (when (load "package.el")
+      (package-initialize)
+      (add-to-list 'package-archives
+                   '("telpa" . "http://tromey.com/elpa/"))
+      ;; Add the user-contributed repository
+      (add-to-list 'package-archives
+                   '("marmalade" . "http://marmalade-repo.org/packages/")))
+  (when (load (expand-file-name "~/.emacs.d/elpa/package.el"))
+    (package-initialize)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; emacs basic preferences ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 (setq-default indent-tabs-mode nil      ; never use tabs
               tab-width 4               ; indent tabs with 4 spaces
               enable-recursive-minibuffers t) ; use minibuffer when
@@ -106,13 +107,26 @@
            (global-set-key (kbd "C-m") 'newline-and-indent)
            (global-set-key (kbd "C-j") 'newline)))
 
+;; quiet!
+(set-message-beep 'silent)
+
+;; show buffers with the same name uniquely
+(require 'uniquify)
+(setq-default uniquify-buffer-name-style 'post-forward)
+
+;; The latest paredit has swapped ) and M-).  Restore them.
+;(progn
+;  (require 'paredit)
+;  (define-key paredit-mode-map (kbd ")") 'paredit-close-round-and-newline)
+;  (define-key paredit-mode-map (kbd "M-)") 'paredit-close-round))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; save all history ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'savehist)
 (savehist-mode 1)
-(setq history-length 5000)
+(setq history-length 100000)
 
 
 ;;;;;;;;;;;;;;;;;
@@ -123,46 +137,47 @@
       add-log-always-start-new-record t)
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Whitespace mode customizations ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(require 'whitespace)
+(setq-default whitespace-style '(tabs lines-tail trailing))
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; programming configurations ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; `c-subword-mode' was renamed to `subword-mode' in Emacs 24
+(when (< emacs-major-version 24)
+  (defun subword-mode (&optional arg)
+    (interactive "P")
+    (c-subword-mode arg)))
+
 (defun swap-cm-cj ()
   (local-set-key (kbd "C-m") 'newline-and-indent)
   (local-set-key (kbd "C-j") 'newline))
-
-(defun vl-insert-pair (open close)
-  (insert open)
-  (save-excursion
-    (insert close)))
-
-(defun vl-close-parens ()
-  (interactive)
-  (backward-up-list)
-  (forward-sexp))
-
-(defmacro vl-create-insertion-close-pair (open close)
-  `(lambda ()
-     (interactive)
-     (vl-insert-pair ,open ,close)))
 
 (defun c-like-prog-mode-prefs ()
   (linum-mode +1)
   (swap-cm-cj)
   (setq parens-require-spaces nil)
-  (local-set-key (kbd "(") #'insert-parentheses)
-  (local-set-key (kbd ")") #'vl-close-parens)
 
-  (local-set-key (kbd "[") (vl-create-insertion-close-pair "[" "]"))
-  (local-set-key (kbd "]") #'vl-close-parens)
+  (local-set-key "(" (lambda (n) (interactive "P") (insert-pair n 40 41)))
+  (local-set-key ")" (lambda (n) (interactive "P") (up-list n)))
+  (local-set-key "[" (lambda (n) (interactive "P") (insert-pair n 91 93)))
+  (local-set-key "]" (lambda (n) (interactive "P") (up-list n)))
+  (local-set-key "{" (lambda (n) (interactive "P") (insert-pair n 123 125)))
+  (local-set-key "}" (lambda (n) (interactive "P") (up-list n)))
 
-  (local-set-key (kbd "{") (vl-create-insertion-close-pair "{" "}"))
-  (local-set-key (kbd "}") #'vl-close-parens)
+  (local-set-key "\"" (lambda (n) (interactive "P") (insert-pair n 34 34)))
+  (local-set-key "'" (lambda (n) (interactive "P") (insert-pair n 39 39)))
 
-  (local-set-key (kbd "'") (vl-create-insertion-close-pair "'" "'"))
-  (local-set-key (kbd "\"") (vl-create-insertion-close-pair "\"" "\""))
+  (subword-mode +1))
 
-  (subword-mode))
-
+
+;;;;;;;;;;;;;;;;
+;;; Org Mode ;;;
+;;;;;;;;;;;;;;;;
 (defun org-mode-preferences ()
   (setq parens-require-spaces nil)
   (subword-mode)
@@ -224,5 +239,13 @@
 (autoload 'markdown-mode "markdown-mode"
   "MarkDown mode, popular in GitHub"
   t)
+(eval-after-load "markdown-mode"
+  (add-hook 'markdown-mode-hook
+            (lambda ()
+              (auto-fill-mode +1)
+              (local-set-key (kbd "C-M-f") 'forward-sexp)
+              (local-set-key (kbd "C-M-b") 'backward-sexp)
+              (local-set-key (kbd "C-M-u") 'backward-up-list)
+              (local-set-key (kbd "C-M-d") 'down-list))))
 
 ;;; eof
