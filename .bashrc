@@ -120,6 +120,10 @@ fi
 
 fortune -a
 
+## Execute .ssh-agent-file which has ssh-agent run details.
+## See .profile for details
+eval `cat ~/.ssh-agent-file`
+
 ## For maintaining machine specific configurations that just aren't
 ## worth storing in this file.
 ##
