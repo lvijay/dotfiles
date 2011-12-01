@@ -9,6 +9,7 @@ export PATH=${EMACS_HOME}/bin:$HOME/bin:${PATH}
 export APACHE=/cygdrive/c/apache-tomcat-5.5.28
 export EDITOR=emacsclient
 
-ssh-agent > .ssh-agent-file
+## start ssh-agent iff it isn't running
+discard=`ps ax | grep ssh-agent` || ssh-agent > ~/.ssh-agent-file
 
 . ~/.bashrc
