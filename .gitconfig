@@ -1,7 +1,7 @@
 [user]
     name = Vijay Lakshminarayanan
 [color]
-    ui = true
+    ui = auto
 [merge]
     tool = emerge
 [mergetool "emerge"]
