@@ -10,3 +10,5 @@
     whitespace = error
 [core]
     whitespace = trailing-space,tab-in-indent
+    autocrlf = false
+    eol = lf
