@@ -120,9 +120,17 @@ fi
 
 fortune -a
 
-## Execute .ssh-agent-file which has ssh-agent run details.
-## See .profile for details
+## Start ssh-agent if it isn't already running
+ps ax | grep -q ssh-agent || ssh-agent > ~/.ssh-agent-file
+
+## Execute .ssh-agent-file which has ssh-agent details.
 eval `cat ~/.ssh-agent-file`
+
+## Setup some environment variables
+export EMACS_HOME=/cygdrive/c/programs/emacs-24.0.50
+export PATH=${EMACS_HOME}/bin:$HOME/bin:${PATH}
+export APACHE=/cygdrive/c/apache-tomcat-5.5.28
+export EDITOR=emacsclient
 
 ## For maintaining machine specific configurations that just aren't
 ## worth storing in this file.
