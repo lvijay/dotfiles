@@ -1,0 +1,50 @@
+# base-files version 3.7-1
+
+# To pick up the latest recommended .bash_profile content,
+# look in /etc/defaults/etc/skel/.bash_profile
+
+# Modifying /etc/skel/.bash_profile directly will prevent
+# setup from updating it.
+
+# The copy in your home directory (~/.bash_profile) is yours, please
+# feel free to customise it to create a shell
+# environment to your liking.  If you feel a change
+# would be benifitial to all, please feel free to send
+# a patch to the cygwin mailing list.
+
+# ~/.bash_profile: executed by bash for login shells.
+
+# source the system wide bashrc if it exists
+if [ -e /etc/bash.bashrc ] ; then
+  source /etc/bash.bashrc
+fi
+
+# source the users bashrc if it exists
+if [ -e "${HOME}/.bashrc" ] ; then
+  source "${HOME}/.bashrc"
+fi
+
+# Set PATH so it includes user's private bin if it exists
+if [ -d "${HOME}/bin" ] ; then
+  PATH=${HOME}/bin:${PATH}
+fi
+
+export PATH=${PATH}:/cygdrive/c/emacs-23.1/bin:/cygdrive/c/programs/nodejs/bin
+
+# Set MANPATH so it includes users' private man if it exists
+# if [ -d "${HOME}/man" ]; then
+#   MANPATH=${HOME}/man:${MANPATH}
+# fi
+
+# Set INFOPATH so it includes users' private info if it exists
+# if [ -d "${HOME}/info" ]; then
+#   INFOPATH=${HOME}/info:${INFOPATH}
+# fi
+
+export EMACS_HOME=/cygdrive/c/programs/emacs-24.0.50
+export PATH=${EMACS_HOME}/bin:$HOME/bin:${PATH}
+export APACHE=/cygdrive/c/apache-tomcat-5.5.28
+export EDITOR=emacsclient
+
+## start ssh-agent iff it isn't running
+ps ax | grep -q ssh-agent || ssh-agent > ~/.ssh-agent-file
