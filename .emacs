@@ -108,7 +108,7 @@
            (global-set-key (kbd "C-j") 'newline)))
 
 ;; quiet!
-(set-message-beep 'silent)
+;(set-message-beep 'silent)
 
 ;; show buffers with the same name uniquely
 (require 'uniquify)
