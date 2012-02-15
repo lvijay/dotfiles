@@ -29,8 +29,6 @@ if [ -d "${HOME}/bin" ] ; then
   PATH=${HOME}/bin:${PATH}
 fi
 
-export PATH=${PATH}:/cygdrive/c/emacs-23.1/bin:/cygdrive/c/programs/nodejs/bin
-
 # Set MANPATH so it includes users' private man if it exists
 # if [ -d "${HOME}/man" ]; then
 #   MANPATH=${HOME}/man:${MANPATH}
@@ -41,9 +39,6 @@ export PATH=${PATH}:/cygdrive/c/emacs-23.1/bin:/cygdrive/c/programs/nodejs/bin
 #   INFOPATH=${HOME}/info:${INFOPATH}
 # fi
 
-export EMACS_HOME=/cygdrive/c/programs/emacs-24.0.50
-export PATH=${EMACS_HOME}/bin:$HOME/bin:${PATH}
-export APACHE=/cygdrive/c/apache-tomcat-5.5.28
 export EDITOR=emacsclient
 
 ## start ssh-agent iff it isn't running
