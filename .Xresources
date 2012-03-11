@@ -12,5 +12,5 @@ Emacs*menuBar            : on
 Emacs*toolBar            : off
 Emacs*verticalScrollBars : off
 Emacs*BorderWidth        : 2
-Emacs*font               : 6x13
-Emacs*fullscreen         : fullboth
+Emacs*font               : 10x20
+Emacs*fullscreen         : off
