@@ -97,7 +97,10 @@
 (windmove-default-keybindings)
 
 ;; start emacs server to use with emacsclient
-(progn (server-force-delete) (sleep-for 1) (server-start 1) (message "Restarted server"))
+(unwind-protect (server-force-delete)
+  (progn
+    (server-start)
+    (message "Restarted server")))
 
 ;; Don't quit emacs
 (global-unset-key (kbd "C-x C-c"))
