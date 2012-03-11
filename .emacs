@@ -248,4 +248,12 @@
               (local-set-key (kbd "C-M-u") 'backward-up-list)
               (local-set-key (kbd "C-M-d") 'down-list))))
 
+
+;;;;;;;;;;;;;;;;;;;;
+;;; POV-Ray mode ;;;
+;;;;;;;;;;;;;;;;;;;;
+(autoload 'pov-mode "pov-mode" "PoVray scene file mode" t)
+(add-to-list 'auto-mode-alist '("\\.pov\\'" . pov-mode))
+(add-to-list 'auto-mode-alist '("\\.inc\\'" . pov-mode))
+
 ;;; eof
