@@ -129,7 +129,7 @@ alias grep='grep --color'                     # show differences in colour
 # alias ll='ls -l'                              # long list
 # alias la='ls -A'                              # all but . and ..
 # alias l='ls -CF'                              #
-alias ls='ls -A --color=tty'                 # classify files in colour
+alias ls='ls -AG'                 # classify files in colour
 
 alias emax='emacsclient -n'
 
