@@ -26,7 +26,7 @@
 
 
 ;;; Add .emacs.d to the load-path by default
-(add-to-list 'load-path "~/.emacs.d")
+(add-to-list 'load-path (expand-file-name "~/.emacs.d"))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -38,15 +38,18 @@
 ;; Move this code earlier if you want to reference
 ;; packages in your .emacs.
 (if (= emacs-major-version 24)
-    (when (load "package.el")
-      (package-initialize)
-      (add-to-list 'package-archives
-                   '("telpa" . "http://tromey.com/elpa/"))
-      ;; Add the user-contributed repository
-      (add-to-list 'package-archives
-                   '("marmalade" . "http://marmalade-repo.org/packages/")))
-  (when (load (expand-file-name "~/.emacs.d/elpa/package.el"))
-    (package-initialize)))
+    (load "package.el")
+  (load (expand-file-name "~/.emacs.d/elpa/package.el")))
+
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/elpa"))
+
+(when (load "package.el")
+  (package-initialize)
+  (add-to-list 'package-archives
+               '("telpa" . "http://tromey.com/elpa/"))
+  ;; Add the user-contributed repository
+  (add-to-list 'package-archives
+               '("marmalade" . "http://marmalade-repo.org/packages/")))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -79,7 +82,7 @@
 (setq-default iswitchb-prompt-newbuffer nil)
 
 ;; show unique buffer names when two buffers have the same name
-(toggle-uniquify-buffer-names)
+;(toggle-uniquify-buffer-names)
 
 ;; disable toolbar
 (tool-bar-mode -1)
@@ -118,10 +121,9 @@
 (setq-default uniquify-buffer-name-style 'post-forward)
 
 ;; The latest paredit has swapped ) and M-).  Restore them.
-;(progn
-;  (require 'paredit)
-;  (define-key paredit-mode-map (kbd ")") 'paredit-close-round-and-newline)
-;  (define-key paredit-mode-map (kbd "M-)") 'paredit-close-round))
+(when (load-file (expand-file-name "~/.emacs.d/elpa/paredit-20/paredit.el"))
+  (define-key paredit-mode-map (kbd ")") 'paredit-close-round-and-newline)
+  (define-key paredit-mode-map (kbd "M-)") 'paredit-close-round))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -151,10 +153,15 @@
 ;;; programming configurations ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; `c-subword-mode' was renamed to `subword-mode' in Emacs 24
-(when (< emacs-major-version 24)
-  (defun subword-mode (&optional arg)
-    (interactive "P")
-    (c-subword-mode arg)))
+(when (not (functionp 'subword-mode))   ; subword-mode doesn't exist
+  (if (functionp 'c-subword-mode)
+      ;; but c-subword-mode exists
+      (defun subword-mode (&optional arg)
+        (interactive "P")
+        (c-subword-mode arg))
+    ;; create an empty placeholder
+    (defun subword-mode (&optional arg)
+      (interactive "P"))))
 
 (defun swap-cm-cj ()
   (local-set-key (kbd "C-m") 'newline-and-indent)
