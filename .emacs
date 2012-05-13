@@ -203,6 +203,7 @@
 (add-hook 'text-mode-hook (lambda () (linum-mode +1)))
 (add-hook 'find-file-hook (lambda () (linum-mode +1)))
 (add-hook 'java-mode-hook #'c-like-prog-mode-prefs)
+(add-hook 'c-mode-hook #'c-like-prog-mode-prefs)
 (add-hook 'python-mode-hook #'c-like-prog-mode-prefs)
 (add-hook 'emacs-lisp-mode-hook (lambda () (linum-mode +1) (paredit-mode +1)))
 (add-hook 'js2-mode-hook #'c-like-prog-mode-prefs)
