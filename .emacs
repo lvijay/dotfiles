@@ -267,4 +267,14 @@
 (add-to-list 'auto-mode-alist '("\\.pov\\'" . pov-mode))
 (add-to-list 'auto-mode-alist '("\\.inc\\'" . pov-mode))
 
+
+;;;;;;;;;;;;;;;;;;;
+;;; eclim stuff ;;;
+;;;;;;;;;;;;;;;;;;;
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/eclim"))
+(require 'eclim)
+
+(setq eclim-auto-save t)
+(global-eclim-mode)
+
 ;;; eof
