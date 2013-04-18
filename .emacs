@@ -183,7 +183,8 @@
   (subword-mode)
   (auto-fill-mode))
 
-(setq-default sgml-basic-offset 4)
+(setq-default sgml-basic-offset 4)      ; indent with 4 spaces
+(setq-default nxml-child-indent 4)
 
 (defun lisp-preferences ()
   (paredit-mode +1)
