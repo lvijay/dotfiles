@@ -5,6 +5,6 @@ export EDITOR=emacsclient
 #export PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
 export PATH=$HOME/bin:$PATH
 
-if ! ps -u`whoami`-x | grep -v grep | grep ssh-agent; then
+if ! ps -u`whoami` | grep -v grep | grep ssh-agent; then
   ssh-agent > .ssh-agent-file
 fi
