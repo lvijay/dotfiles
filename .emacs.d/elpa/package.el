@@ -206,7 +206,7 @@ If VERSION is a string, only that version is ever loaded.
  Hence, the package is \"held\" at that version.
 If VERSION is nil, the package is not loaded (it is \"disabled\")."
   :type '(repeat symbol)
-  :risky t
+  ;:risky t
   :group 'package
   :version "24.1")
 

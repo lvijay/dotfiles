@@ -121,9 +121,9 @@
 (setq-default uniquify-buffer-name-style 'post-forward)
 
 ;; The latest paredit has swapped ) and M-).  Restore them.
-(when (load-file (expand-file-name "~/.emacs.d/elpa/paredit-20/paredit.el"))
-  (define-key paredit-mode-map (kbd ")") 'paredit-close-round-and-newline)
-  (define-key paredit-mode-map (kbd "M-)") 'paredit-close-round))
+;(when (load-file (expand-file-name "~/.emacs.d/elpa/paredit-20/paredit.el"))
+;  (define-key paredit-mode-map (kbd ")") 'paredit-close-round-and-newline)
+;  (define-key paredit-mode-map (kbd "M-)") 'paredit-close-round))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
