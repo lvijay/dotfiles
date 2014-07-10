@@ -9,3 +9,5 @@ defscrollback 2048
 hardstatus on
 hardstatus alwayslastline
 hardstatus string "%>%{wk}%?%-Lw%?%{bw}%n*%f %t%?(%u)%?%{wk}%?%+Lw%?%<"
+
+bind b eval "writebuf" "exec sh -c 'pbcopy < /tmp/screen-exchange'"
