@@ -115,7 +115,8 @@
            (global-set-key (kbd "C-j") 'newline)))
 
 ;; quiet!
-;(set-message-beep 'silent)
+(setq ring-bell-function 'ignore)       ; no beep
+(setq visible-bell nil)
 
 ;; show buffers with the same name uniquely
 (require 'uniquify)
