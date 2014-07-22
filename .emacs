@@ -107,7 +107,10 @@
 
 ;; Don't quit emacs
 (global-unset-key (kbd "C-x C-c"))
-(setq confirm-kill-emacs 'yes-or-no-p) ; handle the annoying Command-Q
+(setq confirm-kill-emacs (lambda (x)    ; handle the annoying Command-Q
+                           (string-equal "quit"
+                                         (read-string
+                                          "To quit emacs, type \"quit\" "))))
 
 ;; Indent line by default
 (funcall (lambda ()
