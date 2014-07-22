@@ -126,8 +126,9 @@
 (setq-default uniquify-buffer-name-style 'post-forward)
 
 ;; The latest paredit has swapped ) and M-).  Restore them.
-(define-key paredit-mode-map (kbd ")") 'paredit-close-parenthesis-and-newline)
-(define-key paredit-mode-map (kbd "M-)") 'paredit-close-parenthesis)
+(when nil
+  (define-key paredit-mode-map (kbd ")") 'paredit-close-parenthesis-and-newline)
+  (define-key paredit-mode-map (kbd "M-)") 'paredit-close-parenthesis))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
