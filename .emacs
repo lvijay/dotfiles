@@ -6,22 +6,21 @@
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
  '(erc-away-nickname "lvijay")
- '(erc-email-userid "laksvij@jeemail.com")
  '(erc-modules (quote (autojoin button completion fill irccontrols list match menu move-to-prompt netsplit networks noncommands readonly ring smiley stamp track)))
  '(erc-nick "lvijay")
  '(erc-prompt-for-password nil)
  '(erc-user-full-name "Vijay Lakshminarayanan")
  '(javascript-indent-level 2)
  '(js-indent-level 2)
- '(safe-local-variable-values
-   '((paredit-mode . t) (major-mode . emacs-lisp) (variable . linum) (linum . t) (major-mode . org)))
- '(user-mail-address "laksvij@gmail.com"))
+ '(nxml-child-indent 4)
+ '(nxml-outline-child-indent 4)
+ '(safe-local-variable-values (quote ((paredit-mode . t) (major-mode . emacs-lisp) (variable . linum) (linum . t) (major-mode . org)))))
 
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  )
 
 
@@ -178,12 +177,14 @@
   (setq parens-require-spaces nil)
 
   (local-set-key "(" (lambda (n) (interactive "P") (insert-pair n 40 41)))
-  (local-set-key ")" (lambda (n) (interactive "P") (up-list n)))
+  ;(local-set-key ")" (lambda (n) (interactive "P") (up-list n)))
   (local-set-key "[" (lambda (n) (interactive "P") (insert-pair n 91 93)))
-  (local-set-key "]" (lambda (n) (interactive "P") (up-list n)))
   (local-set-key "{" (lambda (n) (interactive "P") (insert-pair n 123 125)))
-  (local-set-key "}" (lambda (n) (interactive "P") (up-list n)))
-
+  ;(local-set-key "}" (lambda (n) (interactive "P") (up-list n)))
+  (when (eq major-mode 'python-mode)
+    (local-set-key ")" 'python-nav-up-list)
+    (local-set-key "]" 'python-nav-up-list)
+    (local-set-key "}" 'python-nav-up-list))
   (local-set-key "\"" (lambda (n) (interactive "P") (insert-pair n 34 34)))
   (local-set-key "'" (lambda (n) (interactive "P") (insert-pair n 39 39)))
 
@@ -276,10 +277,10 @@
 ;;;;;;;;;;;;;;;;;;;
 ;;; eclim stuff ;;;
 ;;;;;;;;;;;;;;;;;;;
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/eclim"))
-(require 'eclim)
-
-(setq eclim-auto-save t)
-(global-eclim-mode)
+;(add-to-list 'load-path (expand-file-name "~/.emacs.d/eclim"))
+;(require 'eclim)
+;
+;(setq eclim-auto-save t)
+;(global-eclim-mode)
 
 ;;; eof
