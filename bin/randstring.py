@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
-## removed some characters from string.printable
-PRINTABLE_ASCII = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ '
+ALPHANUMERICS = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+## make ALPHANUMERICS more probable than others
+PRINTABLE_ASCII = ALPHANUMERICS + ALPHANUMERICS + ALPHANUMERICS + '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ '
 
 def randstring(r, n):
     lim = len(PRINTABLE_ASCII) - 1

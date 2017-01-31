@@ -10,7 +10,7 @@ def replace_line(line):
         return line
     return line.replace('\t', '    ')
 
-TRAILING_WS = re.compile('[ \t]$')
+TRAILING_WS = re.compile('[ \t]+$')
 
 def replace_trailing_ws(line):
     global TRAILING_WS
