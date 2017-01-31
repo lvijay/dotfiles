@@ -4,6 +4,7 @@ export EDITOR=emacsclient
 #export ANT_HOME=$HOME/programs/ANT_HOME
 #export PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH
 export PATH=$HOME/bin:$PATH
+export PYTHONPATH=/Users/vlakshminarayanan/Library/Python/2.7/lib/python/site-packages
 
 if ! ps -u`whoami` | grep -v grep | grep ssh-agent; then
   ssh-agent > .ssh-agent-file

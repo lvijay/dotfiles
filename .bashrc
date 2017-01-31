@@ -12,14 +12,14 @@ export HISTCONTROL=ignoredups:ignorespace
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-export HISTSIZE=100000
-export HISTFILESIZE=200000
+export HISTSIZE=10000
+export HISTFILESIZE=20000
 
 # Ignore some controlling instructions
 export HISTIGNORE="[   ]*:&:bg:fg:exit:ls"
 
 # Whenever displaying the prompt, write the previous line to disk
-export PROMPT_COMMAND="history -a; history -c; history -r"
+#export PROMPT_COMMAND="history -a; history -c; history -r"
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -60,6 +60,7 @@ esac
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
+
 ## case $- in
 ##   *i*) [[ -f /etc/bash_completion ]] && . /etc/bash_completion ;;
 ## esac
@@ -83,9 +84,9 @@ fi
 if [ "$color_prompt" = yes ]; then
     PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\w$ '
 fi
-unset color_prompt force_color_prompt
+#unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
@@ -119,9 +120,10 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # alias du='du -h'
 
 # Misc :)
-# alias less='less -r'                          # raw control characters
-# alias whence='type -a'                        # where, of a sort
-alias grep='grep --color'                       # show differences in colour
+alias less='less -r'                          # raw control characters
+# alias whence='type -a'                      # where, of a sort
+alias grep='grep --color=always'              # show differences in colour
+alias sgrep='grep --exclude-dir="*target*" --exclude-dir="*logs*" --exclude-dir="*.svn*"'
 
 # Some shortcuts for different directory listings
 # alias dir='ls --color=auto --format=vertical'
@@ -139,6 +141,9 @@ alias emax='emacsclient -n'
 # Some example functions
 # function settitle() { echo -ne "\e]2;$@\a\e]1;$@\a"; }
 
+# extract mp3 from a video file
+function tomp3() { ffmpeg -i "$1" -f mp3 -vn -b:a "${2}000" "${1}.mp3"; }
+
 fortune -a
 
 ## Execute .ssh-agent-file which has ssh-agent run details.
@@ -155,3 +160,24 @@ eval `cat ~/.ssh-agent-file`
 if [[ -f .envspecific ]] && [[ -x .envspecific ]]; then
     . .envspecific
 fi
+
+function transfer_schemas() {
+    find olap_stitch -type f -name jdbc-olap-schema.xml | xargs -n1 cp -v olap_stitch/etc/schema/jdbc-olap-schema.xml
+    find olap_stitch -type f -name olap-column-defs.xml | xargs -n1 cp -v olap_stitch/etc/schema/olap-column-defs.xml
+}
+
+function set_java8() {
+    export M2_HOME=/usr/local/apache-maven
+    export JAVA_HOME=$JAVA8_HOME
+}
+
+function set_java6() {
+    export M2_HOME=/usr/local/apache-maven-3.2.2
+    export JAVA_HOME=/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home
+}
+
+PATH="/Users/vlakshminarayanan/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="/Users/vlakshminarayanan/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/Users/vlakshminarayanan/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+PERL_MB_OPT="--install_base \"/Users/vlakshminarayanan/perl5\""; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/Users/vlakshminarayanan/perl5"; export PERL_MM_OPT;

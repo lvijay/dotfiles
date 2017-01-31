@@ -1,20 +1,43 @@
 ;; September 2nd 2009
 
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
+(package-initialize)
+
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(eclim-eclipse-dirs (quote ("~/Applications/eclipse_luna")))
+ '(eclim-executable "~/Applications/eclipse_luna/eclim")
+ '(eclimd-default-workspace "~/eclipse/workspace/")
  '(erc-away-nickname "lvijay")
- '(erc-modules (quote (autojoin button completion fill irccontrols list match menu move-to-prompt netsplit networks noncommands readonly ring smiley stamp track)))
- '(erc-nick "lvijay")
+ '(erc-modules
+   (quote
+    (autojoin button completion fill irccontrols list match menu move-to-prompt netsplit networks noncommands readonly ring smiley stamp track)))
+ '(erc-nick "vlakshminarayanan")
  '(erc-prompt-for-password nil)
  '(erc-user-full-name "Vijay Lakshminarayanan")
  '(javascript-indent-level 2)
  '(js-indent-level 2)
  '(nxml-child-indent 4)
  '(nxml-outline-child-indent 4)
- '(safe-local-variable-values (quote ((paredit-mode . t) (major-mode . emacs-lisp) (variable . linum) (linum . t) (major-mode . org)))))
+ '(package-selected-packages
+   (quote
+    (eclim yaml-mode slime-scratch slime-repl puml-mode php-mode paredit markdown-toc markdown-preview-mode malabar-mode magit less keywiz json-mode js2-mode javascript jabber htmlize edbi ecb diff-git cygwin-mount csv-mode css-mode company browse-kill-ring boxquote auctex)))
+ '(safe-local-variable-values
+   (quote
+    ((sh-indent-comment . t)
+     (paredit-mode . t)
+     (major-mode . emacs-lisp)
+     (variable . linum)
+     (linum . t)
+     (major-mode . org))))
+ '(tramp-use-ssh-controlmaster-options nil))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -24,8 +47,12 @@
  )
 
 
-;;; Add .emacs.d to the load-path by default
-(add-to-list 'load-path (expand-file-name "~/.emacs.d"))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; set $PATH env correctly ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(add-to-list 'exec-path "/usr/local/bin")
+
+(setenv "PATH" "/usr/local/bin:$PATH" t)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -36,19 +63,15 @@
 ;; interfacing with ELPA, the package archive.
 ;; Move this code earlier if you want to reference
 ;; packages in your .emacs.
-(if (= emacs-major-version 24)
-    (load "package.el")
-  (load (expand-file-name "~/.emacs.d/elpa/package.el")))
 
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/elpa"))
-
-(when (load "package.el")
-  (package-initialize)
-  (add-to-list 'package-archives
-               '("telpa" . "http://tromey.com/elpa/"))
-  ;; Add the user-contributed repository
-  (add-to-list 'package-archives
-               '("marmalade" . "http://marmalade-repo.org/packages/")))
+;; Add the user-contributed repositories
+(require 'package)
+(add-to-list 'package-archives
+             '("telpa" . "http://tromey.com/elpa/"))
+(add-to-list 'package-archives
+             '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa-stable.milkbox.net/packages/") t)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -74,14 +97,11 @@
 ;; show matching parens
 (show-paren-mode +1)
 
-;; use iswitchb when switching buffers
-(iswitchb-mode +1)
+;; iswitchb has been obsoleted; use ido
+(ido-mode 'buffers)
 
 ;; When switching to a nonexistent buffer, just switch
 (setq-default iswitchb-prompt-newbuffer nil)
-
-;; show unique buffer names when two buffers have the same name
-;(toggle-uniquify-buffer-names)
 
 ;; disable toolbar
 (tool-bar-mode -1)
@@ -111,6 +131,9 @@
                                          (read-string
                                           "To quit emacs, type \"quit\" "))))
 
+;; Don't close the buffer with one key on a Mac
+(global-unset-key (kbd "s-k"))
+
 ;; Indent line by default
 (funcall (lambda ()
            (global-set-key (kbd "C-m") 'newline-and-indent)
@@ -128,6 +151,16 @@
 (when nil
   (define-key paredit-mode-map (kbd ")") 'paredit-close-parenthesis-and-newline)
   (define-key paredit-mode-map (kbd "M-)") 'paredit-close-parenthesis))
+
+;; I want ellipses
+(global-set-key (kbd "C-x 8 :") (lambda (n) (interactive "p") (insert-char 8230 n t)))
+
+
+;;;;;;;;;;;;;
+;;; Popup ;;;
+;;;;;;;;;;;;;
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/popup-el"))
+(require 'popup)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
@@ -176,15 +209,22 @@
   (swap-cm-cj)
   (setq parens-require-spaces nil)
 
+  (cond ((eq major-mode 'python-mode)
+         (local-set-key ")" 'python-nav-up-list)
+         (local-set-key "]" 'python-nav-backward-up-list)
+         (local-set-key "}" 'python-nav-up-list))
+        ((member major-mode '(javascript-mode js-mode))
+         (local-set-key ")" 'up-list)
+         (local-set-key "]" 'up-list)
+         (local-set-key "}" 'up-list))
+        ((member major-mode '(java-mode c-mode))
+         (local-set-key ")" 'up-list)
+         (local-set-key "]" 'up-list)
+         (local-set-key "}" 'up-list)))
   (local-set-key "(" (lambda (n) (interactive "P") (insert-pair n 40 41)))
-  ;(local-set-key ")" (lambda (n) (interactive "P") (up-list n)))
+
   (local-set-key "[" (lambda (n) (interactive "P") (insert-pair n 91 93)))
   (local-set-key "{" (lambda (n) (interactive "P") (insert-pair n 123 125)))
-  ;(local-set-key "}" (lambda (n) (interactive "P") (up-list n)))
-  (when (eq major-mode 'python-mode)
-    (local-set-key ")" 'python-nav-up-list)
-    (local-set-key "]" 'python-nav-up-list)
-    (local-set-key "}" 'python-nav-up-list))
   (local-set-key "\"" (lambda (n) (interactive "P") (insert-pair n 34 34)))
   (local-set-key "'" (lambda (n) (interactive "P") (insert-pair n 39 39)))
 
@@ -201,9 +241,18 @@
 
 (setq-default sgml-basic-offset 4)
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Other programming preferences ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun lisp-preferences ()
   (paredit-mode +1)
   (linum-mode +1))
+
+(add-hook 'lisp-interaction-mode-hook
+          (lambda ()
+            (lisp-preferences)
+            (setq next-line-add-newlines t)))
 
 (add-hook 'org-mode-hook (lambda () (org-mode-preferences)))
 (add-hook 'text-mode-hook (lambda () (linum-mode +1)))
@@ -223,9 +272,7 @@
 (add-hook 'javascript-mode #'c-like-prog-mode-prefs)
 (setq auto-mode-alist (cons (cons "\\.js$" 'javascript-mode) auto-mode-alist))
 
-(add-hook 'lisp-interaction-mode-hook (lambda ()
-                                        (lisp-preferences)
-                                        (setq next-line-add-newlines t)))
+(add-to-list 'auto-mode-alist '("\\.xml\\'" . sgml-mode))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -274,13 +321,11 @@
 (add-to-list 'auto-mode-alist '("\\.inc\\'" . pov-mode))
 
 
-;;;;;;;;;;;;;;;;;;;
-;;; eclim stuff ;;;
-;;;;;;;;;;;;;;;;;;;
-;(add-to-list 'load-path (expand-file-name "~/.emacs.d/eclim"))
-;(require 'eclim)
-;
-;(setq eclim-auto-save t)
-;(global-eclim-mode)
+;;;;;;;;;;;;;;;;;;
+;; eclim stuff ;;;
+;;;;;;;;;;;;;;;;;;
+(require 'eclim)
+(setq eclim-auto-save t)
+(global-eclim-mode)
 
 ;;; eof
