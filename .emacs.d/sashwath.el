@@ -1,3 +1,20 @@
+
+(defun sashwath-say-number ()
+  (interactive)
+  (let ((number (thing-at-point 'word)))
+    (when number
+      (let* ((echo (format "echo %S" number))
+             (say "say -v Samantha")
+             (replace-o-with-0 "gsub(/O/, \"0\", $0)")
+             (replace-leading-zeros "gsub(/^0+/, \"\", $0)")
+             (is-number-p "$0 ~ /^[0-9]+$/")
+             (awk (format "awk '{ %s; %s; if (%s) system(\"%s \" $0) }'"
+                          replace-o-with-0 replace-leading-zeros
+                          is-number-p say))
+             (command (format "%s | %s" echo awk)))
+        (shell-command command)
+        (message "")))))                ; suppress shell message
+
 (defvar sashwath-mode-map
   (let ((keymap (make-sparse-keymap))
         (nodigits t))
@@ -29,6 +46,7 @@
     (define-key keymap (kbd "y") (lambda () (interactive) (insert "Y")))
     (define-key keymap (kbd "z") (lambda () (interactive) (insert "Z")))
     (define-key keymap (kbd "0") (lambda () (interactive) (insert "O")))
+    (define-key keymap (kbd "<f8>") 'sashwath-say-number)
     keymap))
 
 (define-derived-mode sashwath-mode nil "Sashwath"
@@ -38,3 +56,5 @@
 (add-hook 'sashwath-mode-hook (lambda ()
                                 (show-paren-mode -1)
                                 (text-scale-set 1)))
+
+;;; sashwath.el ends here
