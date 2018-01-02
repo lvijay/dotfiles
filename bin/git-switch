@@ -1,0 +1,23 @@
+#!/bin/bash
+
+SWITCH_TO_BRANCH=$1
+
+if [ -z $SWITCH_TO_BRANCH ]; then
+    echo "Usage: $0 branch-snippet"
+    exit 1
+fi
+
+COUNT=`git branch | \grep -i "$SWITCH_TO_BRANCH" | wc -l`
+
+if [[ $COUNT -gt 1 ]]; then
+    echo "Branch snippet ambiguous.  Could not choose from "
+    git branch | \grep -i "$SWITCH_TO_BRANCH"
+    exit 1
+elif [[ $COUNT -eq 0 ]]; then
+    echo "Could not find branch containing $SWITCH_TO_BRANCH"
+    exit 2
+fi
+
+git branch | \grep -i "$SWITCH_TO_BRANCH" | xargs git checkout
+
+## git-switch ends here

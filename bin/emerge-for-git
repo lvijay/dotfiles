@@ -1,2 +1,3 @@
 #!/bin/sh
-emacs -Q $*
+
+/Applications/Emacs.app/Contents/MacOS/Emacs -Q $*

@@ -1,3 +1,9 @@
 #!/bin/bash
 
-git rev-parse --abbrev-ref HEAD
+ans=`git rev-parse --abbrev-ref HEAD`
+
+if [ $ans = "HEAD" ]; then
+    git name-rev HEAD | awk '{print $2}'
+else
+    echo $ans
+fi

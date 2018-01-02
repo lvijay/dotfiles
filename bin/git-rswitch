@@ -1,0 +1,29 @@
+#!/bin/bash
+
+## Switches to a remote branch
+
+SWITCH_TO_BRANCH=$1
+REMOTE=$2
+
+if [ -z $SWITCH_TO_BRANCH ]; then
+    echo "Usage: $0 branch-snippet [remote-repo-reference:origin]"
+    exit 1
+fi
+
+if [ -z $REMOTE ]; then
+    REMOTE=origin
+fi
+
+COUNT=`git branch -r | \grep "$REMOTE/"| \grep -i "$SWITCH_TO_BRANCH" | wc -l`
+
+if [[ $COUNT -eq 0 ]]; then
+    echo "Could not find remote branch containing $SWITCH_TO_BRANCH"
+elif [[ $COUNT -ne 1 ]]; then
+    echo "Branch snippet ambiguous.  Could not choose from "
+    git branch -r | \grep -i "$SWITCH_TO_BRANCH"
+    exit 1
+fi
+
+git branch -r | \grep "$REMOTE/"| \grep -i "$SWITCH_TO_BRANCH" | xargs git checkout
+
+## git-rswitch ends here
