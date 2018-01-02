@@ -1,6 +1,5 @@
 ;; September 2nd 2009
 
-
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
@@ -28,10 +27,12 @@
  '(nxml-outline-child-indent 4)
  '(package-selected-packages
    (quote
-    (eclim yaml-mode slime-scratch slime-repl puml-mode php-mode paredit markdown-toc markdown-preview-mode malabar-mode magit less keywiz json-mode js2-mode javascript jabber htmlize edbi ecb diff-git cygwin-mount csv-mode css-mode company browse-kill-ring boxquote auctex)))
+    (ox-gfm markdown-mode graphviz-dot-mode company-emacs-eclim exec-path-from-shell ecb-snapshot auto-complete eclim yaml-mode slime-scratch slime-repl php-mode paredit markdown-toc markdown-preview-mode malabar-mode magit less keywiz json-mode js2-mode javascript jabber htmlize edbi diff-git cygwin-mount csv-mode css-mode browse-kill-ring boxquote auctex)))
+ '(rectangle-preview nil)
  '(safe-local-variable-values
    (quote
-    ((sh-indent-comment . t)
+    ((encoding . utf-8)
+     (sh-indent-comment . t)
      (paredit-mode . t)
      (major-mode . emacs-lisp)
      (variable . linum)
@@ -47,12 +48,21 @@
  )
 
 
+;;; disable security vulnerability
+;;; see https://lists.gnu.org/archive/html/emacs-devel/2017-09/msg00211.html
+(eval-after-load "enriched"
+  '(defun enriched-decode-display-prop (start end &optional param)
+     (list start end)))
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; set $PATH env correctly ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (add-to-list 'exec-path "/usr/local/bin")
 
 (setenv "PATH" "/usr/local/bin:$PATH" t)
+
+(exec-path-from-shell-initialize)
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -79,8 +89,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (setq-default indent-tabs-mode nil      ; never use tabs
               tab-width 4               ; indent tabs with 4 spaces
-              enable-recursive-minibuffers t) ; use minibuffer when
-                                              ; using minibuffer
+              enable-recursive-minibuffers t ; use minibuffer when
+                                             ; using minibuffer
+              query-replace-lazy-highlight t ; highlight all matches
+              )
 
 ;; disable newbie warnings
 (put 'downcase-region 'disabled nil)
@@ -133,6 +145,7 @@
 
 ;; Don't close the buffer with one key on a Mac
 (global-unset-key (kbd "s-k"))
+(global-unset-key (kbd "s-p"))          ; disable ns-print-buffer
 
 ;; Indent line by default
 (funcall (lambda ()
@@ -258,6 +271,9 @@
 (add-hook 'text-mode-hook (lambda () (linum-mode +1)))
 (add-hook 'find-file-hook (lambda () (linum-mode +1)))
 (add-hook 'java-mode-hook #'c-like-prog-mode-prefs)
+(add-hook 'java-mode-hook (lambda ()
+                            (c-set-offset 'statement-cont '++)
+                            (c-set-offset 'arglist-intro '++)))
 (add-hook 'c-mode-hook #'c-like-prog-mode-prefs)
 (add-hook 'python-mode-hook #'c-like-prog-mode-prefs)
 (add-hook 'emacs-lisp-mode-hook (lambda () (linum-mode +1) (paredit-mode +1)))
@@ -326,6 +342,21 @@
 ;;;;;;;;;;;;;;;;;;
 (require 'eclim)
 (setq eclim-auto-save t)
-(global-eclim-mode)
+
+;;; Set the font of all frames
+(setq-default after-make-frame-functions
+              (append
+               after-make-frame-functions
+               (list (lambda (frame)
+                       (set-frame-font "-*-Menlo-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1")))))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Unicode abbreviations ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;(define-abbrev-table 'text-mode-abbrev-table '(
+;    ("..." "…")
+;    ("rarr" "→")
+;    ))
 
 ;;; eof

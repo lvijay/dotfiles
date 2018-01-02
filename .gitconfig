@@ -8,3 +8,9 @@
 	path = $HOME/bin/emerge-for-git
 [reviewboard]
 	url = http://rb
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+[grep]
+    lineNumber = true

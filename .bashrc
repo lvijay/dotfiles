@@ -61,6 +61,10 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
+if [ -f /usr/local/etc/bash_completion.d/git-completion.bash ]; then
+    . /usr/local/etc/bash_completion.d/git-completion.bash
+fi
+
 ## case $- in
 ##   *i*) [[ -f /etc/bash_completion ]] && . /etc/bash_completion ;;
 ## esac
