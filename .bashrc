@@ -101,10 +101,6 @@ xterm*|rxvt*)
     ;;
 esac
 
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
 # Aliases
 # #######
 
@@ -124,7 +120,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # alias du='du -h'
 
 # Misc :)
-alias less='less -r'                          # raw control characters
+alias less='less -R'                          # raw control characters
 # alias whence='type -a'                      # where, of a sort
 alias grep='grep --color=always'              # show differences in colour
 alias sgrep='grep --exclude-dir="*target*" --exclude-dir="*logs*" --exclude-dir="*.svn*"'
@@ -138,6 +134,10 @@ alias sgrep='grep --exclude-dir="*target*" --exclude-dir="*logs*" --exclude-dir=
 alias ls='ls -AG'                 # classify files in colour
 
 alias emax='emacsclient -n'
+
+## ANTLR4 run
+alias antlr4='CLASSPATH=$CLASSPATH:/usr/local/lib/antlr-4.6-complete.jar java -jar /usr/local/lib/antlr-4.6-complete.jar'
+alias grun='CLASSPATH=$CLASSPATH:/usr/local/lib/antlr-4.6-complete.jar java org.antlr.v4.gui.TestRig'
 
 # Functions
 # #########
