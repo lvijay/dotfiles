@@ -11,6 +11,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(desktop-save-mode t)
+ '(display-line-numbers-type t)
  '(eclim-eclipse-dirs (quote ("~/Applications/eclipse_luna")))
  '(eclim-executable "~/Applications/eclipse_luna/eclim")
  '(eclimd-default-workspace "~/eclipse/workspace/")
@@ -21,13 +23,15 @@
  '(erc-nick "vlakshminarayanan")
  '(erc-prompt-for-password nil)
  '(erc-user-full-name "Vijay Lakshminarayanan")
+ '(global-display-line-numbers-mode t)
  '(javascript-indent-level 2)
  '(js-indent-level 2)
  '(nxml-child-indent 4)
  '(nxml-outline-child-indent 4)
  '(package-selected-packages
    (quote
-    (ox-gfm markdown-mode graphviz-dot-mode company-emacs-eclim exec-path-from-shell ecb-snapshot auto-complete eclim yaml-mode slime-scratch slime-repl php-mode paredit markdown-toc markdown-preview-mode malabar-mode magit less keywiz json-mode js2-mode javascript jabber htmlize edbi diff-git cygwin-mount csv-mode css-mode browse-kill-ring boxquote auctex)))
+    (elisp-slime-nav slime slime-repl slime-scratch flycheck-ocaml merlin merlin-eldoc tuareg utop dr-racket-like-unicode flymake-racket geiser quack caml bbdb caps-lock ox-gfm graphviz-dot-mode company-emacs-eclim exec-path-from-shell ecb-snapshot auto-complete eclim yaml-mode php-mode paredit markdown-toc markdown-preview-mode malabar-mode magit less keywiz json-mode js2-mode javascript jabber htmlize edbi diff-git cygwin-mount csv-mode css-mode browse-kill-ring boxquote auctex)))
+ '(quack-default-program "racket -il typed/racket")
  '(rectangle-preview nil)
  '(safe-local-variable-values
    (quote
@@ -38,7 +42,7 @@
      (variable . linum)
      (linum . t)
      (major-mode . org))))
- '(tramp-use-ssh-controlmaster-options nil))
+ '(tramp-use-ssh-controlmaster-options nil nil (tramp)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -168,6 +172,9 @@
 ;; I want ellipses
 (global-set-key (kbd "C-x 8 :") (lambda (n) (interactive "p") (insert-char 8230 n t)))
 
+;; Have GPG/EPA correctly ask for password
+(setq epa-pinentry-mode 'loopback)
+
 
 ;;;;;;;;;;;;;
 ;;; Popup ;;;
@@ -218,28 +225,27 @@
   (local-set-key (kbd "C-j") 'newline))
 
 (defun c-like-prog-mode-prefs ()
-  (linum-mode +1)
   (swap-cm-cj)
   (setq parens-require-spaces nil)
 
-  (cond ((eq major-mode 'python-mode)
-         (local-set-key ")" 'python-nav-up-list)
-         (local-set-key "]" 'python-nav-backward-up-list)
-         (local-set-key "}" 'python-nav-up-list))
-        ((member major-mode '(javascript-mode js-mode))
-         (local-set-key ")" 'up-list)
-         (local-set-key "]" 'up-list)
-         (local-set-key "}" 'up-list))
-        ((member major-mode '(java-mode c-mode))
-         (local-set-key ")" 'up-list)
-         (local-set-key "]" 'up-list)
-         (local-set-key "}" 'up-list)))
-  (local-set-key "(" (lambda (n) (interactive "P") (insert-pair n 40 41)))
+  ;(cond ((eq major-mode 'python-mode)
+  ;       (local-set-key ")" 'python-nav-up-list)
+  ;       (local-set-key "]" 'python-nav-backward-up-list)
+  ;       (local-set-key "}" 'python-nav-up-list))
+  ;      ((member major-mode '(javascript-mode js-mode))
+  ;       (local-set-key ")" 'up-list)
+  ;       (local-set-key "]" 'up-list)
+  ;       (local-set-key "}" 'up-list))
+  ;      ((member major-mode '(java-mode c-mode))
+  ;       (local-set-key ")" 'up-list)
+  ;       (local-set-key "]" 'up-list)
+  ;       (local-set-key "}" 'up-list)))
+  ;(local-set-key "(" (lambda (n) (interactive "P") (insert-pair n 40 41)))
 
   (local-set-key "[" (lambda (n) (interactive "P") (insert-pair n 91 93)))
   (local-set-key "{" (lambda (n) (interactive "P") (insert-pair n 123 125)))
   (local-set-key "\"" (lambda (n) (interactive "P") (insert-pair n 34 34)))
-  (local-set-key "'" (lambda (n) (interactive "P") (insert-pair n 39 39)))
+  ;(local-set-key "'" (lambda (n) (interactive "P") (insert-pair n 39 39)))
 
   (subword-mode +1))
 
@@ -259,8 +265,7 @@
 ;;; Other programming preferences ;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defun lisp-preferences ()
-  (paredit-mode +1)
-  (linum-mode +1))
+  (paredit-mode +1))
 
 (add-hook 'lisp-interaction-mode-hook
           (lambda ()
@@ -268,15 +273,15 @@
             (setq next-line-add-newlines t)))
 
 (add-hook 'org-mode-hook (lambda () (org-mode-preferences)))
-(add-hook 'text-mode-hook (lambda () (linum-mode +1)))
-(add-hook 'find-file-hook (lambda () (linum-mode +1)))
+;(add-hook 'text-mode-hook (lambda () ))
+;(add-hook 'find-file-hook (lambda () ))
 (add-hook 'java-mode-hook #'c-like-prog-mode-prefs)
 (add-hook 'java-mode-hook (lambda ()
                             (c-set-offset 'statement-cont '++)
                             (c-set-offset 'arglist-intro '++)))
 (add-hook 'c-mode-hook #'c-like-prog-mode-prefs)
 (add-hook 'python-mode-hook #'c-like-prog-mode-prefs)
-(add-hook 'emacs-lisp-mode-hook (lambda () (linum-mode +1) (paredit-mode +1)))
+(add-hook 'emacs-lisp-mode-hook (lambda () (paredit-mode +1)))
 (add-hook 'js2-mode-hook #'c-like-prog-mode-prefs)
 (add-hook 'js2-mode-hook (lambda ()
                            (setq forward-sexp-function nil)
@@ -337,18 +342,43 @@
 (add-to-list 'auto-mode-alist '("\\.inc\\'" . pov-mode))
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Let me manipulate timers ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(put 'list-timers 'disabled nil)
+
+
 ;;;;;;;;;;;;;;;;;;
 ;; eclim stuff ;;;
 ;;;;;;;;;;;;;;;;;;
-(require 'eclim)
-(setq eclim-auto-save t)
+;(require 'eclim)
+;(setq eclim-auto-save t)
+;(add-to-list 'load-path (expand-file-name "~/.emacs.d/eclim/"))
+;(global-eclim-mode)
+;(setq-default eclim-eclipse-dirs '("~/Applications/Eclipse.app/Contents/Eclipse")
+;              eclim-executable "~/Applications/Eclipse.app/Contents/Eclipse/eclim")
+
+;; Navigate errors in the same file
+;(add-hook 'java-mode-hook (lambda ()
+;                            (if (null (member 'eclim-mode minor-mode-list))
+;                                (message "Run eclim-start to enable eclim features.")
+;                              (local-set-key (kbd "s-.") 'eclim-problems-next-same-file)
+;                              (local-set-key (kbd "s->") 'eclim-problems-prev-same-file)
+;                              (local-set-key (kbd "s-1") 'eclim-problems-correct))))
 
 ;;; Set the font of all frames
 (setq-default after-make-frame-functions
               (append
                after-make-frame-functions
                (list (lambda (frame)
-                       (set-frame-font "-*-Menlo-normal-normal-normal-*-13-*-*-*-m-0-iso10646-1")))))
+                       (set-frame-font "-*-Menlo-normal-normal-normal-*-15-*-*-*-m-0-iso10646-1")))))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; For slime and quicklisp ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;(load (expand-file-name "~/quicklisp/slime-helper.el"))
+(setq inferior-lisp-program "sbcl")
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
