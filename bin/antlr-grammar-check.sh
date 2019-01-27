@@ -24,6 +24,8 @@ GRAMMAR=$1
 START_RULE=$2
 shift; shift
 
-${GRUN} $GRAMMAR $START_RULE $@
+if [[ "$#" -gt "0" ]]; then
+    ${GRUN} $GRAMMAR $START_RULE $@
+fi
 
 ## antlr-grammar-check.sh ends here
