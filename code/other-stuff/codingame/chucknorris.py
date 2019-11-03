@@ -1,4 +1,7 @@
-a,z='X0'
+z='0'
 s=''.join([bin(0x80|ord(c))[3:]for c in input()])
-while s:f=s[0]==z;j=s.find('01'[f]);j=[len(s),j][j>=0];s=s[j:];a+=f' {[z,z+z][f]} {z*j}'
-print(a[2:])
+f=s[0];a=f'{[z,z+z][f==z]} '
+for v in s:
+ if f!=v:a,f=a+f' {[z,z+z][v==z]} ',v
+ a+=z
+print(a)
