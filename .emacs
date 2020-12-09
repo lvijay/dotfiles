@@ -11,6 +11,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(c-offsets-alist (quote ((arglist-intro . +) (arglist-cont . ++))))
+ '(column-number-indicator-zero-based t)
  '(desktop-save-mode t)
  '(display-line-numbers-type t)
  '(eclim-eclipse-dirs (quote ("~/Applications/eclipse_luna")))
@@ -28,21 +30,25 @@
  '(js-indent-level 2)
  '(nxml-child-indent 4)
  '(nxml-outline-child-indent 4)
+ '(org-agenda-files (quote ("~/notes/notes.org")))
  '(package-selected-packages
    (quote
-    (elisp-slime-nav slime slime-repl slime-scratch flycheck-ocaml merlin merlin-eldoc tuareg utop dr-racket-like-unicode flymake-racket geiser quack caml bbdb caps-lock ox-gfm graphviz-dot-mode company-emacs-eclim exec-path-from-shell ecb-snapshot auto-complete eclim yaml-mode php-mode paredit markdown-toc markdown-preview-mode malabar-mode magit less keywiz json-mode js2-mode javascript jabber htmlize edbi diff-git cygwin-mount csv-mode css-mode browse-kill-ring boxquote auctex)))
+    (gif-screencast slime pov-mode proof-general elpy docker-tramp dockerfile-mode flycheck-ocaml merlin tuareg utop dr-racket-like-unicode flymake-racket geiser quack caml bbdb caps-lock ox-gfm graphviz-dot-mode company-emacs-eclim exec-path-from-shell ecb-snapshot auto-complete yaml-mode php-mode paredit markdown-toc markdown-preview-mode malabar-mode magit less keywiz json-mode js2-mode javascript jabber htmlize edbi diff-git cygwin-mount csv-mode css-mode browse-kill-ring boxquote auctex)))
  '(quack-default-program "racket -il typed/racket")
  '(rectangle-preview nil)
  '(safe-local-variable-values
    (quote
-    ((encoding . utf-8)
+    ((Base . 10)
+     (Package . SPY)
+     (Syntax . COMMON-LISP)
+     (encoding . utf-8)
      (sh-indent-comment . t)
      (paredit-mode . t)
      (major-mode . emacs-lisp)
      (variable . linum)
      (linum . t)
      (major-mode . org))))
- '(tramp-use-ssh-controlmaster-options nil nil (tramp)))
+ '(tramp-use-ssh-controlmaster-options nil))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -228,26 +234,33 @@
   (swap-cm-cj)
   (setq parens-require-spaces nil)
 
-  ;(cond ((eq major-mode 'python-mode)
-  ;       (local-set-key ")" 'python-nav-up-list)
-  ;       (local-set-key "]" 'python-nav-backward-up-list)
-  ;       (local-set-key "}" 'python-nav-up-list))
-  ;      ((member major-mode '(javascript-mode js-mode))
-  ;       (local-set-key ")" 'up-list)
-  ;       (local-set-key "]" 'up-list)
-  ;       (local-set-key "}" 'up-list))
-  ;      ((member major-mode '(java-mode c-mode))
-  ;       (local-set-key ")" 'up-list)
-  ;       (local-set-key "]" 'up-list)
-  ;       (local-set-key "}" 'up-list)))
+  (cond ;((eq major-mode 'python-mode)
+        ; (local-set-key ")" 'python-nav-up-list)
+        ; (local-set-key "]" 'python-nav-backward-up-list)
+        ; (local-set-key "}" 'python-nav-up-list))
+        ;((member major-mode '(javascript-mode js-mode))
+        ; (local-set-key ")" 'up-list)
+        ; (local-set-key "]" 'up-list)
+        ; (local-set-key "}" 'up-list))
+        ((member major-mode '(java-mode c-mode))
+         (local-set-key ")" 'up-list)
+         (local-set-key "]" 'up-list)
+         (local-set-key "}" 'up-list)))
+  ;; the below settings are redundant after electric-pair-mode
   ;(local-set-key "(" (lambda (n) (interactive "P") (insert-pair n 40 41)))
-
-  (local-set-key "[" (lambda (n) (interactive "P") (insert-pair n 91 93)))
-  (local-set-key "{" (lambda (n) (interactive "P") (insert-pair n 123 125)))
-  (local-set-key "\"" (lambda (n) (interactive "P") (insert-pair n 34 34)))
+  ;(local-set-key "[" (lambda (n) (interactive "P") (insert-pair n 91 93)))
+  ;(local-set-key "{" (lambda (n) (interactive "P") (insert-pair n 123 125)))
+  ;(local-set-key "\"" (lambda (n) (interactive "P") (insert-pair n 34 34)))
   ;(local-set-key "'" (lambda (n) (interactive "P") (insert-pair n 39 39)))
+  (electric-pair-local-mode +1)
 
-  (subword-mode +1))
+  ;; Consider camelCasedWords as individual words.
+  (subword-mode +1)
+
+  ;; indent nicer
+  (c-set-offset 'arglist-intro '+)
+  (display-line-numbers-mode)
+  )
 
 
 ;;;;;;;;;;;;;;;;
@@ -259,6 +272,34 @@
   (auto-fill-mode))
 
 (setq-default sgml-basic-offset 4)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Org notes taking template ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun vl-generate-org-template ()
+  "Inserts the general template used for taking notes.
+
+   Leaves point at the title.
+   Does not modify kill-ring."
+  (interactive)
+  (let* ((template "
+* Title:
+  - Source:
+  - Id: %s
+  - Date:
+  - Authors:
+  - Link:
+  - Notes:
+  - Excerpts:
+    #+BEGIN_QUOTE
+    #+END_QUOTE
+  - Related Links:
+** :tags:
+")
+         (template (format template (uuid)))
+         (template (substring template 1 nil)))
+    (insert template)
+    (goto-char (+ (- (point) (length template)) 2))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -348,24 +389,6 @@
 (put 'list-timers 'disabled nil)
 
 
-;;;;;;;;;;;;;;;;;;
-;; eclim stuff ;;;
-;;;;;;;;;;;;;;;;;;
-;(require 'eclim)
-;(setq eclim-auto-save t)
-;(add-to-list 'load-path (expand-file-name "~/.emacs.d/eclim/"))
-;(global-eclim-mode)
-;(setq-default eclim-eclipse-dirs '("~/Applications/Eclipse.app/Contents/Eclipse")
-;              eclim-executable "~/Applications/Eclipse.app/Contents/Eclipse/eclim")
-
-;; Navigate errors in the same file
-;(add-hook 'java-mode-hook (lambda ()
-;                            (if (null (member 'eclim-mode minor-mode-list))
-;                                (message "Run eclim-start to enable eclim features.")
-;                              (local-set-key (kbd "s-.") 'eclim-problems-next-same-file)
-;                              (local-set-key (kbd "s->") 'eclim-problems-prev-same-file)
-;                              (local-set-key (kbd "s-1") 'eclim-problems-correct))))
-
 ;;; Set the font of all frames
 (setq-default after-make-frame-functions
               (append
@@ -381,12 +404,16 @@
 (setq inferior-lisp-program "sbcl")
 
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Unicode abbreviations ;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;(define-abbrev-table 'text-mode-abbrev-table '(
-;    ("..." "…")
-;    ("rarr" "→")
-;    ))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Miscellaneous utility functions ;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(defun uuid ()
+  "Returns a uuid."
+  (save-excursion
+    (with-temp-buffer
+      (call-process "uuidgen" nil t nil)
+      (buffer-substring-no-properties (point-min)
+                                      (- (point-max) 1)))))
 
-;;; eof
+
+;;; .emacs ends here
